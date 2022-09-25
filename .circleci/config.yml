@@ -11,7 +11,7 @@ commands:
           when: on_fail
           command: |
             # Your code here
-            exit 1
+            # exit 1
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -47,7 +47,7 @@ jobs:
             cd frontend
             npm install
             npm run build
-            exit 1
+            # exit 1
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -63,7 +63,7 @@ jobs:
           name: Back-end build
           command: |
              # Your code here
-             exit 1
+             # exit 1
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -122,7 +122,7 @@ jobs:
               #--tags project=your-tag \
               # --stack-name "your back-end stack name with workflow id" \
               # --parameter-overrides ID="your workflow id"  
-              exit 1
+              # exit 1
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -131,7 +131,7 @@ jobs:
               #--tags project=your-tag \
               # --stack-name "your front-end stack name with workflow id" \
               # --parameter-overrides ID="your workflow id"  
-              exit 1
+              # exit 1
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -155,12 +155,12 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            exit 1
+            # exit 1
       - run:
           name: Configure server
           command: |
             # Your code here
-            exit 1
+            # exit 1
       # Here's where you will add some code to rollback on failure      
 
   run-migrations:
@@ -173,12 +173,12 @@ jobs:
           name: Run migrations
           command: |
             # Your code here
-            exit 1
+            # exit 1
       - run:
           name: Send migration results to memstash
           command: |
             # Your code here
-            exit 1
+            # exit 1
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
