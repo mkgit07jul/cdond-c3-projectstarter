@@ -205,17 +205,27 @@ jobs:
       - image: python:3.10.7-alpine3.16
     steps:
       # Checkout code from git
+      - checkout
       # Add ssh keys with fingerprint
+      - add_ssh_keys:
+          fingerprints:
+              - "8c:f0:83:65:03:ad:c1:75:a8:6d:18:ca:35:14:c1:1f"
       # attach workspace
+      - attach_workspace:
+            at: ~/
       - run:
           name: Install dependencies
           command: |
             # Your code here
+            apk add --update tar gzip ansible nodejs npm curl
+            pip install awscli
             # exit 1
       - run:
           name: Configure server
+          no_output_timeout: 30m
           command: |
             # Your code here
+            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
             # exit 1
       # Here's where you will add some code to rollback on failure      
 
@@ -225,6 +235,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
+      - checkout
       - run:
           name: Run migrations
           command: |
