@@ -243,13 +243,16 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - run:
-          name: install awscli
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get -qq install awscli
-            sudo apt-get -y -qq install python3
-            sudo npm install pm2 -g
+      - restore_cache:
+          keys: [backend-build]
+          
+      # - run:
+        #  name: install awscli
+        #  command: |
+        #    sudo apt-get -y -qq update
+        #    sudo apt-get -qq install awscli
+        #    sudo apt-get -y -qq install python3
+        #    sudo npm install pm2 -g
       - run:
           name: Run migrations
           command: |
@@ -268,6 +271,9 @@ jobs:
             echo "migration data copied to text file"
             cat migrations_dump.txt
             # exit 1
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
       - run:
           name: Send migration results to memstash
           command: |
