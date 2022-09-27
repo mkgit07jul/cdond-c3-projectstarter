@@ -453,7 +453,7 @@ jobs:
             echo "*****after apk update"
             pip install awscli
             echo "***********after awscli install"
-            npm install
+            #npm install
 
       - run:
           name: create .env files
