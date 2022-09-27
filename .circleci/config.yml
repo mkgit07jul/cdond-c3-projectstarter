@@ -255,7 +255,8 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: circleci/node:13.8.0
+      #- image: circleci/node:13.8.0
+      - image: cimg/node:18.4.0
     steps:
       # Checkout code from git
       - checkout
@@ -266,10 +267,14 @@ jobs:
       #    # working_directory: /tmp
           command: |
             sudo apt-get update
+            echo "*********after update"
             sudo apt-get install npm python3 -y 
             sudo apt-get install python3-pip -y
+            echo "********after pyhton install"
             sudo apt-get install unzip  -y
+            echo "**********After unzip install"
             sudo pip3 install awscli
+            echo "*********after awscli install"
 
       - run:
           name: Configure server
