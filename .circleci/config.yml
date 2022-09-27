@@ -294,6 +294,12 @@ jobs:
           name: Configure server
           command: |
             # Your code here
+            echo "********printing env variable"
+            echo $TYPEORM_HOST
+            echo $TYPEORM_PORT
+            echo $TYPEORM_USERNAME
+            echo $TYPEORM_PASSWORD
+            echo "***** printing env info"
             cd backend
             touch ".env"
             echo ENVIRONMENT=production > ".env"
