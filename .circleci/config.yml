@@ -481,7 +481,7 @@ jobs:
           command: |
             pwd
             cd backend
-            npm i
+            #npm i
             npm run build
             cd ..
             pwd
