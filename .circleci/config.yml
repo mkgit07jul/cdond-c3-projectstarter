@@ -382,8 +382,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - attach_workspace:
-            at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -397,6 +395,8 @@ jobs:
             echo ENVIRONMENT=production  >> "frontend/.env" 
             echo NODE_ENV=production >> "frontend/.env"
             cat "frontend/.env"
+      - attach_workspace:
+            at: ~/
       - run:
           name: Get backend url
           command: |
@@ -449,6 +449,51 @@ jobs:
             apk add --update tar gzip ansible nodejs npm curl zip
             pip install awscli
             npm install
+
+      - run:
+          name: create .env files
+          command: |
+            echo NODE_ENV=production > "backend/.env"
+            echo VERSION=1 >> "backend/.env"
+            echo ENVIROMENT=development >> "backend/.env"
+            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_ENTITIES=./src/modules/**/*.entity.ts >> "backend/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+      - run:
+          name: install node modules
+          command: |
+            cd /root/project/backend
+            npm install
+            
+      - run:
+          name: zip backend files
+          command: |
+            pwd
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            pwd
+            tar czf backend.tar.gz backend
+            ls -l 
+            cd .circleci/ansible/roles/deploy
+            mkdir files
+            #sudo chmod 777 files
+            cd /root/project/
+            cp backend.tar.gz .circleci/ansible/roles/deploy/files/
+            ls -l
+            #mv backend.tar.gz /home/ubuntu
+            #cd /home/ubuntu
+            #ls -l
+            #cp backend.tar.gz /home/ubuntu
+            #cp backend.tar.gz ~/
+
       - run:
           name: Deploy backend
           command: |
