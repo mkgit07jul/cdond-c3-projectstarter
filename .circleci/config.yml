@@ -75,6 +75,22 @@ jobs:
              npm install
              npm run build
              # exit 1
+      - persist_to_workspace:
+          root: .
+          paths: [backend/node_modules]
+          # name: Compile the code
+          # command: |
+            # cd backend
+            # npm run build
+      - persist_to_workspace:
+              root: .
+              paths: [backend/dist]
+      - save_cache:
+              paths: [backend/node_modules]
+              key: v5-backend-build
+      - save_cache:
+              paths: [backend/dist]
+              key: v4-backend-dist
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
