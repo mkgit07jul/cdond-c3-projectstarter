@@ -504,7 +504,7 @@ jobs:
           command: |
             # your code here
             cd backend
-            npm i
+            #npm i
             npm run build
             cd ..
             # Zip the directory
