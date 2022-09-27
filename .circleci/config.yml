@@ -487,7 +487,7 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=Udacity-Project3" --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=Udacity-Project3" --output text)
             echo http://${BACKEND_IP}:3030/api/status
             export API_URL=http://${BACKEND_IP}:3030
             
@@ -527,15 +527,33 @@ jobs:
       - image: amazon/aws-cli
     steps:
       # Checkout code from git
+      - checkout          
       - run:
           name: Install dependencies
           command: |
             # your code here
+            yum -y install tar gzip
+            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            yum -y install nodejs
       - run:
           name: Update cloudfront distribution
           command: |
             # your code here
+            export oldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --region us-east-1 --no-paginate --output text)
+            echo $oldWorkflowID >> oldWorkflowID.txt
+            echo "oldWorkflowID is -------"
+            cat oldWorkflowID.txt
+            echo Current workflow ID ${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --stack-name udapeople-Cloudfront \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=udapeople
       # Here's where you will add some code to rollback on failure  
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID}
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   cleanup:
     docker:
