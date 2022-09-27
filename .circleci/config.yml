@@ -248,6 +248,20 @@ jobs:
           no_output_timeout: 30m
           command: |
             # Your code here
+            cd backend
+            touch ".env"
+            echo ENVIRONMENT=production > ".env"
+            echo TYPEORM_CONNECTION=postgres >> ".env"
+            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> ".env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> ".env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> ".env"
+            echo NODE_ENV=production >> ".env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> ".env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> ".env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> ".env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> ".env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> ".env"
+            cd ..            
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
             # exit 1
       # Here's where you will add some code to rollback on failure      
@@ -348,7 +362,11 @@ jobs:
                 curl https://kvdb.io/PJadm6GGWF8BCwhUURsZGB/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
               # exit 1
-     # Here's where you will add some code to rollback on failure      
+     # Here's where you will add some code to rollback on failure
+      - destroy-environment:
+          workflowid: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+          workflowid: "${CIRCLE_WORKFLOW_ID:0:7}"       
 
   deploy-frontend:
     docker:
