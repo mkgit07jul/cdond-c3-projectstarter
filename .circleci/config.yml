@@ -244,6 +244,8 @@ jobs:
             apk add --update tar gzip ansible nodejs npm curl
             pip install awscli
             # exit 1
+      - attach_workspace:
+            at: ~/
       - run:
           name: Configure server
           no_output_timeout: 30m
