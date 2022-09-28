@@ -1,8 +1,8 @@
 ---
-- name: Upgrade all packages to the latest version
-  apt:
-    name: "*"
-    state: latest
+#- name: Upgrade all packages to the latest version
+  #apt:
+    #name: "*"
+    #state: latest
     
 - name: "update apt packages."
   become: yes
@@ -14,10 +14,10 @@
   apt:
     upgrade: yes
 
-- name: remove dependencies that are no longer required
-  become: yes
-  apt:
-    autoremove: yes
+#- name: remove dependencies that are no longer required
+  #become: yes
+  #apt:
+    #autoremove: yes
 
 - name: "install dependencies."
   become: yes
