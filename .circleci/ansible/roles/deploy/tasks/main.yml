@@ -1,5 +1,14 @@
 ---
-
+- name: "unarchive backend files"
+  unarchive: 
+    dest: /home/ubuntu/
+    src: backend.tar.gz
+    
+- name: "upgrade packages."
+  become: true
+  apt:
+    upgrade: "yes"
+    
 - name: Start PM2
   shell: |
     cd ~/backend
