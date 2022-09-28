@@ -1,3 +1,4 @@
 GitHub -- https://github.com/mkgit07jul/cdond-c3-projectstarter
 S3 URL -- http://udapeople-0799293.s3-website-us-east-1.amazonaws.com
+Cloudfront -- https://d10ki1c9nge5z3.cloudfront.net/#/employees
 Prometheus URL -- http://ec2-35-171-25-228.compute-1.amazonaws.com:9090/targets
