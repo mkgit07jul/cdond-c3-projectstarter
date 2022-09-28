@@ -566,10 +566,10 @@ jobs:
               return 1
             fi
       # Here's where you will add some code to rollback on failure 
-      - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID}
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
+      #- revert-migrations:
+          #workflow_id: ${CIRCLE_WORKFLOW_ID}
+      #- destroy-environment:
+          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
 
   cloudfront-update:
     docker:
@@ -600,10 +600,10 @@ jobs:
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
       # Here's where you will add some code to rollback on failure  
-      - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID}
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- revert-migrations:
+          #workflow_id: ${CIRCLE_WORKFLOW_ID}
+      #- destroy-environment:
+          #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
   cleanup:
     docker:
