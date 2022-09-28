@@ -2,8 +2,8 @@
 
 - name: "configuration play." 
   hosts: web
-  #user: ubuntu
-  user: ec2-user
+  user: ubuntu
+  #user: ec2-user
   become: true
   become_method: sudo
   become_user: root  
@@ -42,3 +42,4 @@
   roles:
     # Your code here
     - configure-server
+    - configure-prometheus-node-exporter
