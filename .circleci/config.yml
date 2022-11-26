@@ -575,14 +575,14 @@ jobs:
             if curl -s ${URL} | grep "Welcome"
             then
                 # Change this to 0 after the job fails
-              return 1
+              return 0
             else
               return 1
             fi
       # Here's where you will add some code to rollback on failure 
       - revert-migrations:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #- destroy-environment:
+      - destroy-environment:
           #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
 
   cloudfront-update:
@@ -597,7 +597,7 @@ jobs:
           command: |
             # your code here
             yum -y install tar gzip
-            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            curl -sL https://rpm.nodesource.com/setup_10.x | bash -
             yum -y install nodejs
       - run:
           name: Update cloudfront distribution
