@@ -403,7 +403,7 @@ jobs:
             yum -y install ansible python3
             echo "after installing ansible and python"
             curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
-            yum -y install nodejs 
+            yum -y install nodejs --skip-broken
             echo ENVIRONMENT=production  >> "frontend/.env" 
             echo NODE_ENV=production >> "frontend/.env"
             cat "frontend/.env"
