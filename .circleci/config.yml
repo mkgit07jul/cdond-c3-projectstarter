@@ -32,13 +32,18 @@ commands:
           # Add when this will run
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            echo ${CIRCLE_WORKFLOW_ID:0:7}
+            # kvdburl = "https://kvdb.io/PJadm6GGWF8BCwhUURsZGB/migration_${CIRCLE_WORKFLOW_ID:0:7}"
+            SUCCESS = $(curl https://kvdb.io/PJadm6GGWF8BCwhUURsZGB/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            echo ${SUCCESS}
             SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
+              cd ~/project/backend
+              npm install
             #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              npm run migrations:revert
+              # exit 1
             fi
             
 jobs:
@@ -331,6 +336,7 @@ jobs:
             # Your code here
             cd backend
             sudo npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
       # - run:
         #  name: install awscli
         #  command: |
@@ -364,8 +370,11 @@ jobs:
           name: Send migration results to kvdb
           command: |
             # Your code here
+            echo "before sending migration result to kvdb"
+            curl https://kvdb.io/PJadm6GGWF8BCwhUURsZGB/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
               then
+                echo "sending result to kvdb"
                 # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
                 # curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
                 # If you are using kvdb.io, generate the bucket ID "9GE4jRtKznmVKRfvdBABBe" in your local terminal first
@@ -568,8 +577,8 @@ jobs:
               return 1
             fi
       # Here's where you will add some code to rollback on failure 
-      #- revert-migrations:
-          #workflow_id: ${CIRCLE_WORKFLOW_ID}
+      - revert-migrations:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       #- destroy-environment:
           #workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
 
