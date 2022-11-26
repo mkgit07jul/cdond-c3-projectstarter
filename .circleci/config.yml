@@ -402,9 +402,10 @@ jobs:
             echo "after installing tar and gzip"
             yum -y install ansible python3
             echo "after installing ansible and python"
-            curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
+            curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+            #curl -sL https://rpm.nodesource.com/setup_lts.x | bash -
             yum -y install nodejs --skip-broken
-            sudo apt-get install npm python3 -y
+            #sudo apt-get install npm python3 -y
             #sudo yum install -y nodejs
             echo ENVIRONMENT=production  >> "frontend/.env" 
             echo NODE_ENV=production >> "frontend/.env"
