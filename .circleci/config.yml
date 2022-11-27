@@ -12,7 +12,7 @@ commands:
     steps:
       - run:
           name: Destroy environments
-          when: on_fail
+          #when: on_fail
           command: |
             # Your code here
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
@@ -34,9 +34,9 @@ commands:
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             echo ${CIRCLE_WORKFLOW_ID:0:7}
             # kvdburl = "https://kvdb.io/PJadm6GGWF8BCwhUURsZGB/migration_${CIRCLE_WORKFLOW_ID:0:7}"
-            SUCCESS = $(curl https://kvdb.io/PJadm6GGWF8BCwhUURsZGB/migration_${CIRCLE_WORKFLOW_ID:0:7})
-            echo ${SUCCESS}
-            SUCCESS = 1
+            #SUCCESS = $(curl https://kvdb.io/PJadm6GGWF8BCwhUURsZGB/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            #echo ${SUCCESS}
+            #SUCCESS = 1
             #if(( $SUCCESS==1 )); 
             #then
               cd ~/project/backend
